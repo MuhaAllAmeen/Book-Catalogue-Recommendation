@@ -60,7 +60,7 @@ export default function LoginPage() {
             // In case the user leaves browser afer registering and does not do the config then user will not be found in db
             // so we route them to config
             if (error == "User Configuration not found"){
-                navigate("/config")
+                navigate("/config",{state:{uid: result["uid"], email: result["email"], name: result["name"] }})
             }
             setLoading(false)  
         })

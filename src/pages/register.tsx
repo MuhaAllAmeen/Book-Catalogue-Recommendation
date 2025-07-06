@@ -58,7 +58,7 @@ export default function RegisterPage() {
     console.log(values)
     setLoading(true)
     //save user to firebase and then route to user preference config
-    responseHandler(()=>register(values.email,values.password1),(data)=>{
+    responseHandler(()=>register(values.email,values.password1,values.name),(data)=>{
         const uid =data["uid"]
         const email = values.email
         const name = values.name

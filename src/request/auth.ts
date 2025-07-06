@@ -8,8 +8,8 @@ export async function login(email:string,password:string):Promise<Response>{
 }
 
 //call register
-export async function register(email:string,password:string):Promise<Response>{
-    return await ApiService.post(`${authUrl}/register`, new Map().set("email",email).set("password",password))
+export async function register(email:string,password:string,name:string):Promise<Response>{
+    return await ApiService.post(`${authUrl}/register`, new Map().set("email",email).set("password",password).set("name",name))
 }
 
 //call logout
