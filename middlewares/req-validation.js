@@ -61,7 +61,7 @@ const addUserValidationRules = [
 const updateUserReadingStatusValidationRules = [
     body('user_id').notEmpty().isAlphanumeric().withMessage('user_id is required and must be alphanumeric').escape(),
     body('book_id').notEmpty().isNumeric().withMessage('book_id is required and must be numeric').escape(),
-    body('status').notEmpty().isIn(['WANT_TO_READ', 'READING', 'READ', ]).withMessage('status must be one of: WANT_TO_READ, READING, COMPLETED, DROPPED').escape(),
+    body('status').notEmpty().isIn(['WANT TO READ', 'READING', 'READ', ]).withMessage('status must be one of: WANT_TO_READ, READING, COMPLETED, DROPPED').escape(),
     body('bookDetails').isObject().withMessage('bookDetails must be an object'),
     body('bookDetails.ISBN').notEmpty().isNumeric().withMessage('ISBN is required').escape(),
     body('bookDetails.title').notEmpty().trim().withMessage('title is required').escape(),

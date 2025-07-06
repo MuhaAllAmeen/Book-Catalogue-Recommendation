@@ -3,8 +3,8 @@ import dotenv from 'dotenv'
 // Load environment variables first
 
 //uncomment the local if running in local environment
-dotenv.config({ path: '.env.local' })
-// dotenv.config({ path: '/etc/secrets/.env' })
+// dotenv.config({ path: '.env.local' })
+dotenv.config({ path: '/etc/secrets/.env' })
 
 // Export environment variables for use in other files
 export const config = {
