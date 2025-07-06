@@ -15,7 +15,7 @@ export const connection = connectToDatabase()
 
 const app = express()
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from this origin
+    origin: ['http://localhost:5173', 'http://localhost:3000'], // Allow requests from these origins
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed methods
     credentials: true // Allow credentials (if needed)
 }));
