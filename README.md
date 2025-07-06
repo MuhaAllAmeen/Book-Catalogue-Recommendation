@@ -18,6 +18,11 @@ mobile:
 
 https://github.com/user-attachments/assets/4f6db24d-15e1-43ed-8a55-ffa7105141c5
 
+csv support:
+
+
+https://github.com/user-attachments/assets/4c502a3d-164e-40c8-8b2a-429b96b0df9a
+
 
 
 
@@ -43,6 +48,7 @@ Solution Approach:
       - View recommeded books of the same genre when visiting any book.
       - View personal catalogue and the ability to remove and add book to/from the catalogue.
       - Change personal preference anytime.
+      - Download catalogue to csv file.
 
   - Tech Stack:
       - Frontend: React(Typescript), Tailwind CSS, Shadcn (components), lucide-react (icons).
@@ -55,7 +61,7 @@ Solution Approach:
           - Data Validation: Data is validated in the frontend using zod where we can give our own constraints to follow. Validation is also done in the backend so as to avoid sql injection and cross site                                scripting.
           - IP rate limiting is also implemented.
           - Catalogue, recommendations, settings, progress pages can only be viewed if the user has logged in
-      - DB: A hosted mysql db from freesqldatabase.com is used. All the scripts are attached below. Indexes are created for user_id on users table and (user_id,book_id) for user_book_status table. user_book_status table is also normalized to join with the user id and book id of users and books table sets as primary + foreign key and set to cascade on delete.
+      - DB: A hosted mysql db from freesqldatabase.com is used. All the scripts are attached below. There are three tables in total (users,books, user_book_status). Indexes are created for user_id on users table and (user_id,book_id) for user_book_status table. user_book_status table is also normalized to join with the user id and book id of users and books table sets as primary + foreign key and set to cascade on delete.
       - Auth: Authentication is done using firebase. All the auth details are stored securely by firebase. Firebase generate the tokens for use. The uid provided by firebase is used as the user id in the                  users table. React context is used for state management across the app and the user details are stored locally to retrieve anywere in the app.
 
   - API Documentation: Download the file - https://limewire.com/d/VuYYv#GmLV1EPFEa
