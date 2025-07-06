@@ -1,9 +1,10 @@
 import { Router } from "express"
-import { getAllBooks, getAllBooksOfUser, getGenreRecommendations, getUserRecommendations, searchBook } from "../db/books/operations.js"
-import { refineBooksByStatus, refineRecommendationResponse, refineUserRecommendationResponse } from "../db/helper.js"
-import { verifyFirebaseToken } from "../middleware.js"
-import { DatabaseError } from "../db/errors.js"
-import { genreRecommendationValidation, getUserBookStatusValidation, searchBookValidation, userRecommendationValidation } from "../config/req-validation.js"
+import { getAllBooks, getGenreRecommendations, getUserRecommendations, searchBook } from "../repositories_db/books_repo.js"
+import { getAllBooksOfUser } from "../repositories_db/user_book_status_repo.js"
+import { refineBooksByStatus, refineRecommendationResponse, refineUserRecommendationResponse } from "../utils/helper.js"
+import { verifyFirebaseToken } from "../middlewares/firebase-middleware.js"
+import { DatabaseError } from "../utils/errors.js"
+import { genreRecommendationValidation, getUserBookStatusValidation, searchBookValidation, userRecommendationValidation } from "../middlewares/req-validation.js"
 export const booksRouter = Router()
 
 //gets all the books from the book library for anyone visiting the website

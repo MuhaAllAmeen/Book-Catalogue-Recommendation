@@ -1,5 +1,5 @@
-import { connection } from "../../server.js";
-import { DatabaseError } from "../errors.js";
+import { connection } from "../server.js";
+import { DatabaseError } from "../utils/errors.js";
 
 
 //get all the books in the library
@@ -71,7 +71,7 @@ export async function getUserRecommendations(genre, preferredMinimumPublicationY
         console.error(e)
     }
     
-    console.log(genreRecommendations) 
+    // console.log(genreRecommendations) 
     return genreRecommendations
 }
 
@@ -90,28 +90,3 @@ export async function searchBook(type, value) {
     }) 
 }
 
-// get all books the user has marked progress (added to catalogue) with its status
-// function is also used to get all books of a user of a particular status
-export async function getAllBooksOfUser(user_id, status){
-    let getAllBooksofUserQuery = `
-    SELECT books.*, user_book_status.status
-    FROM books
-    JOIN user_book_status ON books.ISBN = user_book_status.book_id
-    WHERE user_book_status.user_id = ? 
-  `;
-    if (status != null){
-        getAllBooksofUserQuery += `AND user_book_status.status = '${status}'`
-    }
-
-    return new Promise((resolve,reject)=> {
-        connection.query(getAllBooksofUserQuery,[user_id],(err, results) => {
-            if (err) {
-                console.error('Error adding book: ' + err.stack);
-                reject(new DatabaseError('Error adding book', err.code));
-                return;
-            }
-            // console.log(results)
-            resolve(results);
-        })
-    })
-}

@@ -48,8 +48,29 @@ const getUserReadingStatusValidationRules = [
     query("book_id").notEmpty().isNumeric().withMessage('book_id is required').escape(),
 ];
 
+const addUserValidationRules = [
+    body('userDetails').isObject().withMessage('userDetails must be an object'),
+    body('userDetails.id').notEmpty().isAlphanumeric().withMessage('user id is required and must be alphanumeric').escape(),
+    body('userDetails.name').notEmpty().trim().withMessage('name is required').escape(),
+    body('userDetails.email').notEmpty().isEmail().withMessage('valid email is required').normalizeEmail(),
+    body('userDetails.preferredGenres').optional().isString().withMessage('preferredGenres must be a string').escape(),
+    body('userDetails.preferredMinimumPublicationYear').optional().isInt({ min: 1900, max: new Date().getFullYear() }).withMessage('preferredMinimumPublicationYear must be a valid year between 1800 and current year'),
+    body('userDetails.preferredBookLength').optional().isIn(['SHORT', 'MEDIUM', 'LONG']).withMessage('preferredBookLength must be one of: SHORT, MEDIUM, LONG')
+];
 
-
+const updateUserReadingStatusValidationRules = [
+    body('user_id').notEmpty().isAlphanumeric().withMessage('user_id is required and must be alphanumeric').escape(),
+    body('book_id').notEmpty().isNumeric().withMessage('book_id is required and must be numeric').escape(),
+    body('status').notEmpty().isIn(['WANT_TO_READ', 'READING', 'READ', ]).withMessage('status must be one of: WANT_TO_READ, READING, COMPLETED, DROPPED').escape(),
+    body('bookDetails').isObject().withMessage('bookDetails must be an object'),
+    body('bookDetails.ISBN').notEmpty().isNumeric().withMessage('ISBN is required').escape(),
+    body('bookDetails.title').notEmpty().trim().withMessage('title is required').escape(),
+    body('bookDetails.author').notEmpty().trim().withMessage('author is required').escape(),
+    body('bookDetails.genre').optional().isString().withMessage('genre must be a string').escape(),
+    body('bookDetails.description').optional().isString().withMessage('description must be a string').escape(),
+    body('bookDetails.publicationYear').optional().isInt({ min: 1900, max: new Date().getFullYear() }).withMessage('publicationYear must be a valid year between 1800 and current year'),
+    body('bookDetails.coverArt').optional().isURL().withMessage('coverArt must be a valid URL')
+];
 
 // Middleware function
 export function createValidationMiddleware(validators) {
@@ -89,6 +110,8 @@ export const getUserBookStatusValidation = createValidationMiddleware(getUserBoo
 export const getUserValidation = createValidationMiddleware(getUserValidationRules)
 export const updateUserValidation = createValidationMiddleware(updateUserValidationRules);
 export const getUserReadingStatusValidation = createValidationMiddleware(getUserReadingStatusValidationRules);
+export const addUserValidation = createValidationMiddleware(addUserValidationRules);
+export const updateUserReadingStatusValidation = createValidationMiddleware(updateUserReadingStatusValidationRules);
 
 
 

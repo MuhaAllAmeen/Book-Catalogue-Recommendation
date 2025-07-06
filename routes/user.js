@@ -1,9 +1,10 @@
 import { Router } from "express"
-import { addUserToDB, deleteUserReadingStatus, getUserFromDB, getUserReadingStatus, updateUserReadingStatus, updateUserToDB } from "../db/users/operations.js"
-import { DatabaseError, UserAlreadyExistsError, UserNotFoundError } from "../db/errors.js"
-import { addBookToDB } from "../db/books/operations.js"
-import { verifyFirebaseToken } from "../middleware.js"
-import { getUserReadingStatusValidation, getUserValidation, updateUserValidation } from "../config/req-validation.js"
+import { addUserToDB, getUserFromDB,updateUserToDB } from "../repositories_db/user_repo.js"
+import {getUserReadingStatus, updateUserReadingStatus, deleteUserReadingStatus} from "../repositories_db/user_book_status_repo.js"
+import { DatabaseError, UserAlreadyExistsError, UserNotFoundError } from "../utils/errors.js"
+import { addBookToDB } from "../repositories_db/books_repo.js"
+import { verifyFirebaseToken } from "../middlewares/firebase-middleware.js"
+import { getUserReadingStatusValidation, getUserValidation, updateUserValidation, addUserValidation, updateUserReadingStatusValidation } from "../middlewares/req-validation.js"
 
 export const userRouter = Router()
 
@@ -11,7 +12,7 @@ export const userRouter = Router()
 userRouter.use(verifyFirebaseToken)
 
 //adds user to db
-userRouter.post("/add-user",async (req,res)=>{
+userRouter.post("/add-user", addUserValidation, async (req,res)=>{
     try{
         const {userDetails} = req.body
         const result = await addUserToDB(userDetails)
@@ -84,7 +85,7 @@ userRouter.get("/get-user-reading-status",getUserReadingStatusValidation,async(r
 
 //updates the reading status of a user of a particular book.
 //if the book is not already present in the db, it adds the book first so that there is a valid book id
-userRouter.put("/update-user-reading-status",async(req,res)=>{
+userRouter.put("/update-user-reading-status", updateUserReadingStatusValidation, async(req,res)=>{
     try{
         const {user_id, book_id, status, bookDetails} = req.body
         const bookResult = await addBookToDB(bookDetails)

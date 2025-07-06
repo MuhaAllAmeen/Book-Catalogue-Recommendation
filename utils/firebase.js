@@ -2,7 +2,7 @@ import { cert, initializeApp as initializeAdminApp } from 'firebase-admin/app';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import fs from 'fs';
-import { config } from './config/env.js';
+import { config } from './env.js';
 
 
 
@@ -11,7 +11,7 @@ const serviceAccount = JSON.parse(Buffer.from(config.FIREBASE_ADMIN, 'base64').t
 // const serviceAccount = JSON.parse(fs.readFileSync("lana-auth-test-firebase-admin.json"));
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC0XD-amyvrcOLz-HE4z6ilTIARAgGj0AY",
+    apiKey: config.FIREBASE_API_KEY,
     authDomain: "lana-auth-test.firebaseapp.com",
     projectId: "lana-auth-test",
     storageBucket: "lana-auth-test.firebasestorage.app",

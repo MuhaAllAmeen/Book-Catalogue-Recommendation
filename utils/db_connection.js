@@ -1,5 +1,5 @@
 import mysql from 'mysql'
-import { config } from '../config/env.js'
+import { config } from './env.js'
 
 //connect to mysql db
 export function connectToDatabase(){

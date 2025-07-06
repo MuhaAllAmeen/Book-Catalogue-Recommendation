@@ -1,8 +1,8 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "@firebase/auth";
-import { DatabaseError, EmailAlreadyExistsError, IncompleteCredentialsError, InternalServerError, InvalidCredentialsError, UserAlreadyExistsError } from "../errors.js";
-import {auth} from '../../firebase.js'
+import { DatabaseError, EmailAlreadyExistsError, IncompleteCredentialsError, InternalServerError, InvalidCredentialsError, UserAlreadyExistsError } from "../utils/errors.js";
+import {auth} from '../utils/firebase.js'
 import {getAuth} from 'firebase-admin/auth'
-import { connection } from "../../server.js";
+import { connection } from "../server.js";
 
 
 // login function that returns the user details and token
@@ -144,62 +144,3 @@ export async function updateUserToDB(id, preferredGenres, preferredBookLength, p
 }
 
 
-//updates user's reading status of a book
-//if its the user's first time marking progress, it will insert or else it will update
-export async function updateUserReadingStatus(user_id, book_id, status){
-    const updateReadingStatusQuery = `
-        INSERT INTO user_book_status (user_id, book_id, status, updated_at)
-        VALUES (?, ?, ?, NOW())
-        ON DUPLICATE KEY UPDATE status = VALUES(status), updated_at = NOW()
-        `;
-    return new Promise((resolve, reject) => {
-        connection.query(updateReadingStatusQuery, [user_id,book_id,status] ,(err, results) => {        
-            if (err) {
-                console.error('Error updating status: ' + err);
-                reject(new DatabaseError('Error updating status', err.code));
-                return;
-            }
-            // results is an array of RowDataPacket objects; to get plain object:
-            
-            resolve(results);
-        });
-    });
-}
-
-//get the reading status of a user's book
-export async function getUserReadingStatus(user_id, book_id){
-    const getReadingStatusQuery = `
-        SELECT * FROM user_book_status 
-        WHERE user_id = '${user_id}' AND book_id = '${book_id}'
-        `;
-    return new Promise((resolve, reject) => {
-        connection.query(getReadingStatusQuery ,(err, results) => {        
-            if (err) {
-                console.error('Error fetching status: ' + err);
-                reject(new DatabaseError('Error fetching status', err.code));
-                return;
-            }
-            // results is an array of RowDataPacket objects; to get plain object:
-            resolve(results[0]);
-        });
-    });
-}
-
-//delete status of a user's book. this will remove the progress and delete from the catalogue
-export async function deleteUserReadingStatus(user_id, book_id){
-    const deleteReadingStatusQuery = `
-        DELETE FROM user_book_status 
-        WHERE user_id = '${user_id}' AND book_id = '${book_id}'
-        `;
-    return new Promise((resolve, reject) => {
-        connection.query(deleteReadingStatusQuery ,(err, results) => {        
-            if (err) {
-                console.error('Error fetching status: ' + err);
-                reject(new DatabaseError('Error fetching status', err.code));
-                return;
-            }
-            // results is an array of RowDataPacket objects; to get plain object:
-            resolve(results[0]);
-        });
-    });
-}

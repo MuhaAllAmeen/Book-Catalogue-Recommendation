@@ -1,9 +1,9 @@
 import { Router } from "express"
-import { getAuthUser, login, logout, register } from "../db/users/operations.js"
-import { EmailAlreadyExistsError, IncompleteCredentialsError, InternalServerError, InvalidCredentialsError, NoRefreshTokenError } from "../db/errors.js"
-import { verifyFirebaseToken } from "../middleware.js"
-import { config } from "../config/env.js"
-import { loginValidation, registerValidation } from "../config/req-validation.js"
+import { getAuthUser, login, logout, register } from "../repositories_db/user_repo.js"
+import { EmailAlreadyExistsError, IncompleteCredentialsError, InternalServerError, InvalidCredentialsError, NoRefreshTokenError } from "../utils/errors.js"
+import { verifyFirebaseToken } from "../middlewares/firebase-middleware.js"
+import { config } from "../utils/env.js"
+import { loginValidation, registerValidation } from "../middlewares/req-validation.js"
 
 export const authRouter = Router()
 

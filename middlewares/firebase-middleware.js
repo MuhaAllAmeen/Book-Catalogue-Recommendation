@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase-admin/auth';
 import axios from 'axios'
-import { NoAccessTokenError, NoRefreshTokenError } from './db/errors.js';
-import { config } from './config/env.js';
+import { NoAccessTokenError, NoRefreshTokenError } from '../utils/errors.js';
+import { config } from '../utils/env.js';
 
 export const verifyFirebaseToken = async (req, res, next) => {
 

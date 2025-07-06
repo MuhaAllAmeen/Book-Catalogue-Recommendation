@@ -1,11 +1,11 @@
 // Import config first to ensure environment variables are loaded
-import './config/env.js'
+import './utils/env.js'
 
 import express from 'express'
 import {booksRouter} from './routes/books.js'
-import { connectToDatabase } from './db/connection.js'
+import { connectToDatabase } from './utils/db_connection.js'
 import cors from 'cors'
-import { firebaseAdminApp, firebaseApp } from './firebase.js'
+import { firebaseAdminApp, firebaseApp } from './utils/firebase.js'
 import { authRouter } from './routes/auth.js'
 import { userRouter } from './routes/user.js'
 import cookieParser from 'cookie-parser'
