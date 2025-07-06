@@ -3,6 +3,7 @@ import { getAllBooks, getAllBooksOfUser, getGenreRecommendations, getUserRecomme
 import { refineBooksByStatus, refineRecommendationResponse, refineUserRecommendationResponse } from "../db/helper.js"
 import { verifyFirebaseToken } from "../middleware.js"
 import { DatabaseError } from "../db/errors.js"
+import { genreRecommendationValidation, getUserBookStatusValidation, searchBookValidation, userRecommendationValidation } from "../config/req-validation.js"
 export const booksRouter = Router()
 
 //gets all the books from the book library for anyone visiting the website
@@ -21,7 +22,7 @@ booksRouter.get('/get-books',async (req,res)=>{
 })
 
 //gets 10 books relevant to the genre when user visits a book
-booksRouter.get('/get-genre-recommendations',async (req,res)=>{
+booksRouter.get('/get-genre-recommendations',genreRecommendationValidation,async (req,res)=>{
     try{
         const {genre} = req.query
         const recommendations = await getGenreRecommendations(genre,10)
@@ -36,7 +37,7 @@ booksRouter.get('/get-genre-recommendations',async (req,res)=>{
 })
 
 //gets customized recommendation based on genre, pub year and book length
-booksRouter.get('/get-user-recommendations',verifyFirebaseToken ,async (req,res)=>{
+booksRouter.get('/get-user-recommendations',userRecommendationValidation,verifyFirebaseToken ,async (req,res)=>{
     try{
         const {genre, preferredBookLength, preferredMinimumPublicationYear} = req.query
         const recommendations = await getUserRecommendations(genre)
@@ -52,7 +53,7 @@ booksRouter.get('/get-user-recommendations',verifyFirebaseToken ,async (req,res)
 
 
 //search for any book based on title or isbn
-booksRouter.get('/search-book',async (req,res)=>{
+booksRouter.get('/search-book',searchBookValidation,async (req,res)=>{
     try{
         const {type,value} = req.query
         const results = await searchBook(type,value)
@@ -64,25 +65,11 @@ booksRouter.get('/search-book',async (req,res)=>{
     }
 })
 
-//get all the books the user has a reading status (saved to catalogue)
-// booksRouter.get("/get-user-books", verifyFirebaseToken, async(req,res)=>{
-//     try{
-//         const {user_id} = req.query
-//         console.log(user_id)
-//         const results = await getAllBooksOfUser(user_id)
-//         const booksByStatus = refineBooksByStatus(results)
-//         res.status(200).json({result: booksByStatus})
-//     }catch(e){
-//         if (e instanceof DatabaseError) {
-//             return res.status(e.code).json({error: e.message})
-//         }
-//         return res.status(500).json({error: 'Internal server error'})
-//     }
-// })
+
 
 //gets all the books a user has saved based on the status
 //eg: if user wants all the books that he has marked as want to read
-booksRouter.get("/get-user-books-of-status", verifyFirebaseToken, async(req,res)=>{
+booksRouter.get("/get-user-books-of-status", getUserBookStatusValidation, verifyFirebaseToken, async(req,res)=>{
     try{
         const {user_id, status} = req.query
         console.log(user_id)

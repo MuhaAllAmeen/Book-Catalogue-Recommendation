@@ -17,9 +17,10 @@ export async function login(email,password){
         const refreshToken = userCredential.user.refreshToken
 
         const uid = userCredential.user.uid;
+        const name = userCredential.user.displayName
 
           if (idToken) {
-            return {idToken, refreshToken, email, uid}
+            return {idToken, refreshToken, email, uid, name}
           } else {
               throw new InternalServerError("Couldn't process token",500)
             //   res.status(500).json({ error: "internal Server Error" });
@@ -37,13 +38,13 @@ export async function login(email,password){
 
 // register function that returns the user details and token
 
-export async function register(email,password){
+export async function register(email,password, name){
     try{
         if (!email || !password) {
             throw new IncompleteCredentialsError("Credentials Missing", 422)
         }
         const userCred = await createUserWithEmailAndPassword(auth, email, password)
-        
+        await getAuth().updateUser(userCred.user.uid,{displayName:name})
         const idToken = userCred._tokenResponse.idToken
         const refreshToken = userCred.user.refreshToken
         if (idToken) {

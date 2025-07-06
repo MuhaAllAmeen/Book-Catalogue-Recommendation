@@ -3,15 +3,17 @@ import { getAuthUser, login, logout, register } from "../db/users/operations.js"
 import { EmailAlreadyExistsError, IncompleteCredentialsError, InternalServerError, InvalidCredentialsError, NoRefreshTokenError } from "../db/errors.js"
 import { verifyFirebaseToken } from "../middleware.js"
 import { config } from "../config/env.js"
+import { loginValidation, registerValidation } from "../config/req-validation.js"
 
 export const authRouter = Router()
 
-//user login
-authRouter.post('/login',async (req,res)=>{
+//user login with validation middleware
+authRouter.post('/login', loginValidation, async (req,res)=>{
     try{
-        const { email, password } = req.body;
+        // Use validated data from middleware
+        const { email, password } = req.validatedData;
         console.log(req.body)
-        const {idToken, refreshToken, uid} = await login(email,password)
+        const {idToken, refreshToken, uid, name} = await login(email,password)
 
         console.log(idToken)
         //save tokens to cookies
@@ -40,7 +42,7 @@ authRouter.post('/login',async (req,res)=>{
                       sameSite: 'Lax'
                   })
               });
-              res.status(200).json({ message: "User logged in successfully", result: {uid,email} });
+              res.status(200).json({ message: "User logged in successfully", result: {uid,email, name} });
           }     
       }catch(error){
         if (error instanceof IncompleteCredentialsError){
@@ -56,12 +58,13 @@ authRouter.post('/login',async (req,res)=>{
       }   
 })
 
-//register user
-authRouter.post('/register',async (req,res)=>{
+//register user with validation
+authRouter.post('/register', registerValidation, async (req,res)=>{
     try{
-        const { email, password } = req.body;
+        // Use validated data from middleware
+        const { email, password, name } = req.validatedData;
         console.log(req.body)
-        const {idToken, refreshToken, userCred} = await register(email,password)
+        const {idToken, refreshToken, userCred} = await register(email,password,name)
 
         console.log(idToken)
         //save tokens to cookies

@@ -3,6 +3,7 @@ import { addUserToDB, deleteUserReadingStatus, getUserFromDB, getUserReadingStat
 import { DatabaseError, UserAlreadyExistsError, UserNotFoundError } from "../db/errors.js"
 import { addBookToDB } from "../db/books/operations.js"
 import { verifyFirebaseToken } from "../middleware.js"
+import { getUserReadingStatusValidation, getUserValidation, updateUserValidation } from "../config/req-validation.js"
 
 export const userRouter = Router()
 
@@ -29,7 +30,7 @@ userRouter.post("/add-user",async (req,res)=>{
 
 
 //gets user from db
-userRouter.get("/get-user",async(req,res)=>{
+userRouter.get("/get-user",getUserValidation,async(req,res)=>{
     try{
         const {id} = req.query
         const result = await getUserFromDB(id)
@@ -51,7 +52,7 @@ userRouter.get("/get-user",async(req,res)=>{
 
 
 //updates user to db with the genre, pubyear or book lengt data or all of them together
-userRouter.put("/update-user",async(req,res)=>{
+userRouter.put("/update-user",updateUserValidation,async(req,res)=>{
     try{
         const {id} = req.query
         const {preferredGenres, preferredBookLength, preferredMinimumPublicationYear} = req.body
@@ -67,7 +68,7 @@ userRouter.put("/update-user",async(req,res)=>{
 })
 
 //get the reading status of a user of a particular book
-userRouter.get("/get-user-reading-status",async(req,res)=>{
+userRouter.get("/get-user-reading-status",getUserReadingStatusValidation,async(req,res)=>{
     try{
         const {user_id, book_id} = req.query
         const result = await getUserReadingStatus(user_id,book_id)
@@ -99,7 +100,7 @@ userRouter.put("/update-user-reading-status",async(req,res)=>{
 })
 
 //user can remove their reading progress of a book and this will remove the books from user's catalogue
-userRouter.delete("/delete-user-reading-status",async(req,res)=>{
+userRouter.delete("/delete-user-reading-status",getUserReadingStatusValidation,async(req,res)=>{
     try{
         const {user_id, book_id} = req.query
         const result = await deleteUserReadingStatus(user_id,book_id)
