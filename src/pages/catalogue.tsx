@@ -8,7 +8,10 @@ import BookGrid from "@/main_components/book_grid"
 import { SkeletonCard } from "@/main_components/skeleton_card"
 import { BookModel } from "@/models/BookModel"
 import {  getBooksOfUserOfStatus } from "@/request/books"
+import { DownloadIcon } from "lucide-react"
 import { useEffect, useState } from "react"
+import { CSVLink } from "react-csv";
+
 
 // catalogue page where a user's saved books are displayed
 const CataloguePage = () =>{
@@ -76,7 +79,7 @@ const CataloguePage = () =>{
                 
                 <h2 className="text-2xl text-middle-100">You have saved {allBooks.length} books.</h2>
                 <p className="text-dark-100">To add a book to your catalogue, simply visit any book from the library or search for it and mark your progress.</p>
-                
+
                 <div className="flex flex-col items-center md:flex-row gap-5 mt-5">
                     {/* filter by genre */}
                     <Select value={selectedGenre} onValueChange={setSelected}>
@@ -108,6 +111,10 @@ const CataloguePage = () =>{
                             )}
                         </PopoverContent>
                     </Popover>
+                    {allBooks.length > 0 && (
+                        <CSVLink data={allBooks} filename="my-catalogue" className="flex md:self end border-1 px-3 py-1 rounded-xl border-primary-100 gap-1"><DownloadIcon size={20} /> Catalogue</CSVLink>
+                    )}
+
                 </div>
 
                 {loading && (

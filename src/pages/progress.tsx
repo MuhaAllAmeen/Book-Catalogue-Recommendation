@@ -59,6 +59,7 @@ const ProgressPage = () =>{
             <h1 className="text-4xl text-primary-100 font-bold">Your Progress.</h1>        
 
             <div className="flex flex-col lg:flex-row w-full mt-10 gap-11 items-center ">
+
                 <div className="w-full">
                     {allBooksByStatus.length > 0 && (
                         <ChartPieInteractive booksWithStatus={allBooksByStatus} 
