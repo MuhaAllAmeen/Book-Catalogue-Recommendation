@@ -2,6 +2,25 @@
 
 Welcome to Book Catalogue! Mark your progress on any book and let the book be visible to the world.
 
+Working video:
+Non login
+
+
+
+https://github.com/user-attachments/assets/f6433ec0-dbb9-4381-94d6-5d227361cc9d
+
+website after loggin in:
+
+
+https://github.com/user-attachments/assets/1851f033-2421-443c-9639-d21ead474b23
+
+mobile:
+
+https://github.com/user-attachments/assets/4f6db24d-15e1-43ed-8a55-ffa7105141c5
+
+
+
+
 Solution Approach: 
   - A book catalogue system where the user can add books to their catalogue by marking its reading progress (READ, READING, WANT TO READ).
   - Pages:
@@ -39,9 +58,12 @@ Solution Approach:
       - DB: A hosted mysql db from freesqldatabase.com is used. All the scripts are attached below. Indexes are created for user_id on users table and (user_id,book_id) for user_book_status table. user_book_status table is also normalized to join with the user id and book id of users and books table sets as primary + foreign key and set to cascade on delete.
       - Auth: Authentication is done using firebase. All the auth details are stored securely by firebase. Firebase generate the tokens for use. The uid provided by firebase is used as the user id in the                  users table. React context is used for state management across the app and the user details are stored locally to retrieve anywere in the app.
 
-   - Setup Instructions:
-       - Both frontend and backend has been hosted. Backend is hosted to a free render instance and frontend to a free netlify instance. I recommend running this application locally since the free instance can shut down automatically due to inactivity. I just did this out of curiosity.
-       - To run backend locally. install dependencies using npm install. just run node server.js on the backend. (few env variables are required like firebase api key, db credentials, firebase-admin-certificate).
+  - API Documentation: Download the file - https://limewire.com/d/VuYYv#GmLV1EPFEa
+  - SQL Scripts: Download the file - https://limewire.com/d/VuYYv#GmLV1EPFEa
+    
+  - Setup Instructions:
+       - Both frontend and backend has been hosted. Backend is hosted to a free render instance(https://book-catalogue-recommendation.onrender.com) and frontend to a free netlify instance(https://zippy-churros-517ebe.netlify.app/). I recommend running this application locally since the free instance can shut down automatically due to inactivity. I just did this out of curiosity.
+       - To run backend locally. install dependencies using npm install. just run node server.js on the backend. (few env variables are required like firebase api key, db credentials, firebase-admin-certificate. setup env and change env location in env.js).
        - To run the frontend locally, install dependencies using npm install. build the frontend using npm run build.
         
 
