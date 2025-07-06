@@ -1,0 +1,22 @@
+export const popularBookCategories = [
+    { id: "FIC000000", label: "Fiction" },
+    { id: "BIO000000", label: "Biography & Autobiography" },
+    { id: "BUS000000", label: "Business & Economics" },
+    { id: "COM000000", label: "Computers" },
+    { id: "EDU000000", label: "Education" },
+    { id: "FAM000000", label: "Family & Relationships" },
+    { id: "HEA000000", label: "Health & Fitness" },
+    { id: "HIS000000", label: "History" },
+    { id: "HUM000000", label: "Humor" },
+    { id: "LIT000000", label: "Literary Criticism" },
+    { id: "PER000000", label: "Performing Arts" },
+    { id: "PHI000000", label: "Philosophy" },
+    { id: "POE000000", label: "Poetry" },
+    { id: "PSY000000", label: "Psychology" },
+    { id: "REL000000", label: "Religion" },
+    { id: "SCI000000", label: "Science" },
+    { id: "SOC000000", label: "Social Science" },
+    { id: "SPO000000", label: "Sports & Recreation" },
+    { id: "TRV000000", label: "Travel" },
+    { id: "YAF000000", label: "Young Adult Fiction" }
+]
