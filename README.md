@@ -34,11 +34,18 @@ Solution Approach:
       - Security:
           - JWT Tokens: Auth is completely done on the backend to separate business logic from UI. User generates access and refresh token on login/sign up. The tokens are saved on the cookies instead of                            sending it back and storing it locally which can be a security risk. Tokens are also verified on every request.
           - Data Validation: Data is validated in the frontend using zod where we can give our own constraints to follow. Validation is also done in the backend so as to avoid sql injection and cross site                                scripting.
+          - IP rate limiting is also implemented.
           - Catalogue, recommendations, settings, progress pages can only be viewed if the user has logged in
-      - DB: A hosted mysql db from freesqldatabase.com is used. All the scripts are attached below.
-      - Auth: Authentication is done using firebase. All the auth details are stored securely by firebase. Firebase generate the tokens for use. The uid provided by firebase is used as the user id in the                  users table.
-      - 
+      - DB: A hosted mysql db from freesqldatabase.com is used. All the scripts are attached below. Indexes are created for user_id on users table and (user_id,book_id) for user_book_status table. user_book_status table is also normalized to join with the user id and book id of users and books table sets as primary + foreign key and set to cascade on delete.
+      - Auth: Authentication is done using firebase. All the auth details are stored securely by firebase. Firebase generate the tokens for use. The uid provided by firebase is used as the user id in the                  users table. React context is used for state management across the app and the user details are stored locally to retrieve anywere in the app.
+
+   - Setup Instructions:
+       - Both frontend and backend has been hosted. Backend is hosted to a free render instance and frontend to a free netlify instance. I recommend running this application locally since the free instance can shut down automatically due to inactivity. I just did this out of curiosity.
+       - To run backend locally. install dependencies using npm install. just run node server.js on the backend. (few env variables are required like firebase api key, db credentials, firebase-admin-certificate).
+       - To run the frontend locally, install dependencies using npm install. build the frontend using npm run build.
         
+
+  
   - Future Ideas:
       - Add point reward system where points are rewarded to the user when he marks any book as read or reading.
       - AI chat bot for asking questions about any book
