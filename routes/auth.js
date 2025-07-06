@@ -18,11 +18,11 @@ authRouter.post('/login', loginValidation, async (req,res)=>{
         console.log(idToken)
         //save tokens to cookies
           if (idToken) {
+              
               res.cookie('access_token', idToken, {
                   httpOnly: true,
                   path: '/',
                   maxAge: 60 * 60 * 1000,
-                  domain: config.NODE_ENV === 'production' ? '.netlify.app' : undefined,
                   ...(config.NODE_ENV === 'production' && {
                       secure: true,
                       sameSite: 'None'
@@ -35,7 +35,6 @@ authRouter.post('/login', loginValidation, async (req,res)=>{
                   httpOnly: true,
                   path: '/',
                   maxAge: 14 * 24 * 60 * 60 * 1000,
-                  domain: config.NODE_ENV === 'production' ? '.netlify.app' : undefined,
                   ...(config.NODE_ENV === 'production' && {
                       secure: true,
                       sameSite: 'None'
@@ -75,7 +74,6 @@ authRouter.post('/register', registerValidation, async (req,res)=>{
                   httpOnly: true,
                   path: '/',
                   maxAge: 60 * 60 * 1000,
-                  domain: config.NODE_ENV === 'production' ? '.netlify.app' : undefined,
                   ...(config.NODE_ENV === 'production' && {
                       secure: true,
                       sameSite: 'None'
@@ -88,7 +86,6 @@ authRouter.post('/register', registerValidation, async (req,res)=>{
                   httpOnly: true,
                   path: '/',
                   maxAge: 14 * 24 * 60 * 60 * 1000,
-                  domain: config.NODE_ENV === 'production' ? '.netlify.app' : undefined,
                   ...(config.NODE_ENV === 'production' && {
                       secure: true,
                       sameSite: 'None'

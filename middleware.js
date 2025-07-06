@@ -8,9 +8,6 @@ export const verifyFirebaseToken = async (req, res, next) => {
   try {
     //retrieve access token from cookie and verify it
     let token = req.cookies.access_token
-    console.log('All cookies received:', req.cookies);
-    console.log('Access token cookie:', token);
-    console.log('User agent:', req.headers['user-agent']);
     
     if (!token) {
       throw new NoAccessTokenError()
@@ -50,7 +47,6 @@ export const verifyFirebaseToken = async (req, res, next) => {
           httpOnly: true,
           path: '/',
           maxAge: 60 * 60 * 1000,
-          domain: config.NODE_ENV === 'production' ? '.netlify.app' : undefined,
           ...(config.NODE_ENV === 'production' && {
               secure: true,
               sameSite: 'None'
@@ -63,7 +59,6 @@ export const verifyFirebaseToken = async (req, res, next) => {
           httpOnly: true,
           path: '/',
           maxAge: 60 * 60 * 24 * 14 * 1000,
-          domain: config.NODE_ENV === 'production' ? '.netlify.app' : undefined,
           ...(config.NODE_ENV === 'production' && {
               secure: true,
               sameSite: 'None'
