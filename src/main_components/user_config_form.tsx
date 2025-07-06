@@ -77,7 +77,7 @@ const UserConfigForm:React.FC<UserConfigFormProps> = ({onFormSubmit}) => {
         <div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="mt-15">
+                    <div className="mt-10">
                     
                         <h2 className="text-xl text-middle-100">Select your favorite genres.</h2>
                         {/* <div className="grid grid-cols-5"> */}

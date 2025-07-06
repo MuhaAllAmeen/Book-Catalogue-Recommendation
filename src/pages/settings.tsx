@@ -1,3 +1,4 @@
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { useAuth } from "@/context/auth_context"
 import { checkGenreDifference, responseHandler } from "@/lib/utils"
 import UserConfigForm, { type formValueType } from "@/main_components/user_config_form"
@@ -54,7 +55,20 @@ const SettingsPage = () =>{
     return(
         <div>
             <h1 className="text-4xl text-primary-100 font-bold">Change your preferences.</h1>
-            <UserConfigForm onFormSubmit={onSubmit} />
+            {user && (
+                <div className="mt-10">
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                        <h2 className="text-2xl text-dark-100 w-fit">Hi <span className="font-bold">{user.name}</span>!</h2>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{user.email}</p>
+                        </TooltipContent>
+                        </Tooltip>
+                    <UserConfigForm onFormSubmit={onSubmit} />
+
+                </div>
+            )}
         </div>
     )
 }
