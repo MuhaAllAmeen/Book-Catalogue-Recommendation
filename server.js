@@ -18,7 +18,9 @@ const app = express()
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:3000',"https://zippy-churros-517ebe.netlify.app"], // Allow requests from these origins
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed methods
-    credentials: true // Allow credentials (if needed)
+    credentials: true, // Allow credentials (if needed)
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['Set-Cookie']
 }));
 
 // Set up rate limiter: maximum of 100 requests per 15 minutes per IP
