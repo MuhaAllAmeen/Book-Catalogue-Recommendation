@@ -1,9 +1,7 @@
 import { getAuth } from 'firebase-admin/auth';
 import axios from 'axios'
-import dotenv from 'dotenv'
 import { NoAccessTokenError, NoRefreshTokenError } from './db/errors.js';
-dotenv.config({ path: '.env.local' })
-
+import { config } from './config/env.js';
 
 export const verifyFirebaseToken = async (req, res, next) => {
 
@@ -33,7 +31,7 @@ export const verifyFirebaseToken = async (req, res, next) => {
 
       try {
         const refreshRes = await axios.post(
-          `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`,
+          `https://securetoken.googleapis.com/v1/token?key=${config.FIREBASE_API_KEY}`,
           new URLSearchParams({
             grant_type: 'refresh_token',
             refresh_token: refreshToken,
@@ -47,17 +45,27 @@ export const verifyFirebaseToken = async (req, res, next) => {
         // Set new cookies
         res.cookie('access_token', newIdToken, {
           httpOnly: true,
-          // secure: true,
-          sameSite: 'Strict',
           path: '/',
-          maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+          maxAge: 60 * 60 * 1000,
+          ...(config.NODE_ENV === 'production' && {
+              secure: true,
+              sameSite: 'None'
+          }),
+          ...(config.NODE_ENV !== 'production' && {
+              sameSite: 'Lax'
+          })
         });
         res.cookie('refresh_token', newRefreshToken, {
           httpOnly: true,
-          // secure: true,
-          sameSite: 'Strict',
           path: '/',
-          maxAge: 60 * 60 * 24 * 14 * 1000, // 14 days in milliseconds
+          maxAge: 60 * 60 * 24 * 14 * 1000,
+          ...(config.NODE_ENV === 'production' && {
+              secure: true,
+              sameSite: 'None'
+          }),
+          ...(config.NODE_ENV !== 'production' && {
+              sameSite: 'Lax'
+          })
         });
         
         // the new token is verified again so that we can get user data from it and send to the endpoint

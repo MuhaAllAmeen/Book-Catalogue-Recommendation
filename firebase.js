@@ -2,9 +2,13 @@ import { cert, initializeApp as initializeAdminApp } from 'firebase-admin/app';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import fs from 'fs';
+import { config } from './config/env.js';
+
+
 
 //initialize firebase admin for verifiying tokens and initialize firebase-auth to do logins and stuff
-const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_ADMIN, 'base64').toString('utf8'));
+const serviceAccount = JSON.parse(Buffer.from(config.FIREBASE_ADMIN, 'base64').toString('utf8'));
+// const serviceAccount = JSON.parse(fs.readFileSync("lana-auth-test-firebase-admin.json"));
 
 const firebaseConfig = {
     apiKey: "AIzaSyC0XD-amyvrcOLz-HE4z6ilTIARAgGj0AY",

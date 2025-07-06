@@ -1,15 +1,14 @@
 import mysql from 'mysql'
-import dotenv from "dotenv"
-dotenv.config({ path: '.env.local' })
+import { config } from '../config/env.js'
 
 //connect to mysql db
 export function connectToDatabase(){
     try{
         const connection = mysql.createPool({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE
+            host: config.DB_HOST,
+            user: config.DB_USER,
+            password: config.DB_PASSWORD,
+            database: config.DB_DATABASE
         })
         // connection.connect((err)=>{
         //     if (err) {

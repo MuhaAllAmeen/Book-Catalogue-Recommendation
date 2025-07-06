@@ -2,6 +2,7 @@ import { Router } from "express"
 import { getAuthUser, login, logout, register } from "../db/users/operations.js"
 import { EmailAlreadyExistsError, IncompleteCredentialsError, InternalServerError, InvalidCredentialsError, NoRefreshTokenError } from "../db/errors.js"
 import { verifyFirebaseToken } from "../middleware.js"
+import { config } from "../config/env.js"
 
 export const authRouter = Router()
 
@@ -17,15 +18,27 @@ authRouter.post('/login',async (req,res)=>{
           if (idToken) {
               res.cookie('access_token', idToken, {
                   httpOnly: true,
-                  sameSite: 'Strict',
                   path: '/',
                   maxAge: 60 * 60 * 1000,
+                  ...(config.NODE_ENV === 'production' && {
+                      secure: true,
+                      sameSite: 'None'
+                  }),
+                  ...(config.NODE_ENV !== 'production' && {
+                      sameSite: 'Lax'
+                  })
               });
               res.cookie('refresh_token', refreshToken, {
                   httpOnly: true,
-                  sameSite: 'Strict',
                   path: '/',
                   maxAge: 14 * 24 * 60 * 60 * 1000,
+                  ...(config.NODE_ENV === 'production' && {
+                      secure: true,
+                      sameSite: 'None'
+                  }),
+                  ...(config.NODE_ENV !== 'production' && {
+                      sameSite: 'Lax'
+                  })
               });
               res.status(200).json({ message: "User logged in successfully", result: {uid,email} });
           }     
@@ -55,15 +68,27 @@ authRouter.post('/register',async (req,res)=>{
           if (idToken) {
               res.cookie('access_token', idToken, {
                   httpOnly: true,
-                  sameSite: 'Strict',
                   path: '/',
                   maxAge: 60 * 60 * 1000,
+                  ...(config.NODE_ENV === 'production' && {
+                      secure: true,
+                      sameSite: 'None'
+                  }),
+                  ...(config.NODE_ENV !== 'production' && {
+                      sameSite: 'Lax'
+                  })
               });
               res.cookie('refresh_token', refreshToken, {
                   httpOnly: true,
-                  sameSite: 'Strict',
                   path: '/',
                   maxAge: 14 * 24 * 60 * 60 * 1000,
+                  ...(config.NODE_ENV === 'production' && {
+                      secure: true,
+                      sameSite: 'None'
+                  }),
+                  ...(config.NODE_ENV !== 'production' && {
+                      sameSite: 'Lax'
+                  })
               });
               res.status(200).json({ message: "User created successfully", result:{uid: userCred.user.uid} });
           }     
@@ -91,14 +116,26 @@ authRouter.post("/logout", verifyFirebaseToken, (req,res)=>{
     //clear the tokens from cookies
     res.clearCookie('access_token', {
         httpOnly: true,
-        sameSite: 'Strict',
         path: '/',
-        });
-        res.clearCookie('refresh_token', {
+        ...(config.NODE_ENV === 'production' && {
+            secure: true,
+            sameSite: 'None'
+        }),
+        ...(config.NODE_ENV !== 'production' && {
+            sameSite: 'Lax'
+        })
+    });
+    res.clearCookie('refresh_token', {
         httpOnly: true,
-        sameSite: 'Strict',
         path: '/',
-        });
+        ...(config.NODE_ENV === 'production' && {
+            secure: true,
+            sameSite: 'None'
+        }),
+        ...(config.NODE_ENV !== 'production' && {
+            sameSite: 'Lax'
+        })
+    });
     res.status(200).json({ result: "User logged out successfully" });
     })
     .catch((error) => {
