@@ -65,28 +65,32 @@ booksRouter.get('/search-book',async (req,res)=>{
 })
 
 //get all the books the user has a reading status (saved to catalogue)
-booksRouter.get("/get-user-books", verifyFirebaseToken, async(req,res)=>{
-    try{
-        const {user_id} = req.query
-        console.log(user_id)
-        const results = await getAllBooksOfUser(user_id)
-        const booksByStatus = refineBooksByStatus(results)
-        res.status(200).json({result: booksByStatus})
-    }catch(e){
-        if (e instanceof DatabaseError) {
-            return res.status(e.code).json({error: e.message})
-        }
-        return res.status(500).json({error: 'Internal server error'})
-    }
-})
+// booksRouter.get("/get-user-books", verifyFirebaseToken, async(req,res)=>{
+//     try{
+//         const {user_id} = req.query
+//         console.log(user_id)
+//         const results = await getAllBooksOfUser(user_id)
+//         const booksByStatus = refineBooksByStatus(results)
+//         res.status(200).json({result: booksByStatus})
+//     }catch(e){
+//         if (e instanceof DatabaseError) {
+//             return res.status(e.code).json({error: e.message})
+//         }
+//         return res.status(500).json({error: 'Internal server error'})
+//     }
+// })
 
 //gets all the books a user has saved based on the status
 //eg: if user wants all the books that he has marked as want to read
 booksRouter.get("/get-user-books-of-status", verifyFirebaseToken, async(req,res)=>{
     try{
         const {user_id, status} = req.query
-        console.log(status)
-        const results = await getAllBooksOfUser(user_id,status)
+        console.log(user_id)
+        let results = await getAllBooksOfUser(user_id,status)
+        // if status is null then user requires all the books grouped by status
+        if (status == null){
+            results = refineBooksByStatus(results)
+        }
         res.status(200).send({result: results})
     }catch(e){
         if (e instanceof DatabaseError) {
