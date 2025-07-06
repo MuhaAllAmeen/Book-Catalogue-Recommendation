@@ -28,11 +28,6 @@ export async function getUserRecommendations(genre: string, preferredMinimumPubl
     return response
 }
 
-// get all books the user has marked progress
-// export async function getBooksOfUser(user_id: string){
-//     const response = await ApiService.get(`${booksUrl}/get-user-books`,new Map().set("user_id",user_id))
-//     return response
-// }
 
 // get all books the user has marked progress
 // if status is null then it will fetch all books grouped by status
